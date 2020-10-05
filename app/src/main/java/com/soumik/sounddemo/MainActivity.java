@@ -28,13 +28,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         audioManager =(AudioManager)getSystemService (AUDIO_SERVICE);
-        final int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
         harley = MediaPlayer.create(this, R.raw.harley);
 
         SeekBar volume = (SeekBar) findViewById(R.id.volumeSlider);
 
         volume.setMax(maxVolume);
+        volume.setProgress(currentVolume);
 
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
