@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
     MediaPlayer harley;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
         volume.setMax(maxVolume);
         volume.setProgress(currentVolume);
 
+
+
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean fromUser) {
@@ -55,11 +60,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        SeekBar audioController =(SeekBar) findViewById(R.id.audioController);
+        final SeekBar audioController =(SeekBar) findViewById(R.id.audioController);
+        audioController.setMax(harley.getDuration());
         audioController.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                harley.seekTo(progress);
             }
 
             @Override
@@ -72,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        new Timer().scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                audioController.setProgress(harley.getCurrentPosition());
+            }
+        },0,30);
+
+        }
     }
 
-}
